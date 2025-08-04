@@ -11,7 +11,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 
 const FolderForm = () => {
@@ -33,7 +32,9 @@ const FolderForm = () => {
       <Form {...form}>
         <form
           action=""
-          onSubmit={form.handleSubmit((data) => console.log(data))}
+          onSubmit={form.handleSubmit((data) => {
+            console.log(data);
+          })}
         >
           <FormField
             name="name"
