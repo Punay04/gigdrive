@@ -8,8 +8,7 @@ export async function POST(request: NextRequest) {
   const { data: existingUser, error } = await supabase
     .from("Users")
     .select()
-    .eq("hash", data.hash)
-    .eq("telegramId", data.id)
+    .eq("telegramId", String(data.id))
     .single();
 
   if (!existingUser || error) {
@@ -41,7 +40,12 @@ export async function POST(request: NextRequest) {
     });
   }
 
+  const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET!, {
+    expiresIn: "7d",
+  });
+
   return NextResponse.json({
     message: "User already exists",
+    token,
   });
 }

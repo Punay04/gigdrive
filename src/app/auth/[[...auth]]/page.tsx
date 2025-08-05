@@ -1,7 +1,19 @@
+"use client";
 import AuthPage from "@/modals/auth/views/auth-page";
-import React from "react";
+import { useStore } from "@/zustand/store";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
-const page = () => {
+const Page = () => {
+  const isLoggedIn = useStore((state) => state.isLoggedIn);
+  const router = useRouter();
+
+  // useEffect(() => {
+  if (isLoggedIn) {
+    router.push("/dashboard");
+  }
+  // }, [isLoggedIn, router]);
+
   return (
     <div>
       <AuthPage />
@@ -9,4 +21,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
