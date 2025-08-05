@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -12,6 +13,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
+import { toast } from "sonner";
+import { useStore } from "@/zustand/store";
 
 const FolderForm = () => {
   const formSchema = z.object({
@@ -27,13 +31,27 @@ const FolderForm = () => {
     },
   });
 
+  const userId = useStore((state) => state.userData.telegramId);
+
   return (
     <div>
       <Form {...form}>
         <form
           action=""
-          onSubmit={form.handleSubmit((data) => {
-            console.log(data);
+          onSubmit={form.handleSubmit(async (data) => {
+            const res = await axios.post("/api/createFolder", {
+              name: data.name,
+              description: data.description,
+              userId,
+            });
+
+            const resData = await res.data;
+            console.log("hola");
+
+            console.log("resData : " + resData);
+
+            toast(`${resData.message}`);
+            form.reset();
           })}
         >
           <FormField
@@ -73,7 +91,7 @@ const FolderForm = () => {
           />
           <br />
           <Button variant={"destructive"} type="submit">
-            <span className="text-black">Create Folder</span>
+            <span className="text-black cursor-pointer">Create Folder</span>
           </Button>
         </form>
       </Form>
