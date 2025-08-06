@@ -2,7 +2,14 @@ import { useStore } from "@/zustand/store";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FileText, Download, Calendar, HardDrive } from "lucide-react";
+import {
+  FileText,
+  Download,
+  Calendar,
+  HardDrive,
+  TrashIcon,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const FilesBox = ({ folderId }: { folderId: number }) => {
   const [files, setFiles] = useState([]);
@@ -20,7 +27,7 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
     };
 
     getFiles();
-  }, [folderId, userId, setFiles, files]);
+  }, [folderId, userId, files]);
 
   const botToken = process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN;
 
@@ -30,6 +37,17 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
     const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+  };
+
+  const handleDeleteFile = async (fileId: number) => {
+    try {
+      await axios.post("/api/deleteFile", {
+        fileId,
+      });
+      setFiles((prevFiles) => prevFiles.filter((file) => file.id !== fileId));
+    } catch (error) {
+      console.error("Error deleting file:", error);
+    }
   };
 
   return (
@@ -78,6 +96,12 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-300/30 via-red-300/25 to-red-200/20 flex items-center justify-center shadow-lg border border-red-300/25 group-hover:from-red-300/40 group-hover:via-red-300/35 group-hover:to-red-200/30 transition-all duration-500">
                     <FileText className="w-8 h-8 text-red-300" />
                   </div>
+                  <Button
+                    className="bg-red-300/40 hover:bg-red-300/20 cursor-pointer"
+                    onClick={() => handleDeleteFile(file.id)}
+                  >
+                    <TrashIcon className="w-6 h-6 text-white text-xl font-bold hover:text-red-300" />
+                  </Button>
                 </div>
 
                 <div className="space-y-4">
