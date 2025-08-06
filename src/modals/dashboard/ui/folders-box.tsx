@@ -37,15 +37,24 @@ const FoldersBox = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6 mt-6 h-full mx-6 mb-6 bg-gradient-to-br from-neutral-900/80 to-neutral-800/80 backdrop-blur-sm rounded-2xl p-8 border border-neutral-700/50 shadow-2xl">
+    <div className="flex flex-col gap-8 mt-6 h-full mx-6 mb-6 bg-gradient-to-br from-neutral-900/90 via-neutral-800/80 to-neutral-900/90 backdrop-blur-xl rounded-3xl p-10 border border-neutral-700/60 shadow-2xl">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-300/20 to-red-200/20 flex items-center justify-center">
-            <Folder className="w-6 h-6 text-red-300" />
+        <div className="flex items-center space-x-4">
+          <div className="relative">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-300/25 via-red-300/20 to-red-200/15 flex items-center justify-center shadow-xl border border-red-300/20">
+              <Folder className="w-7 h-7 text-red-300" />
+            </div>
+            <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-br from-red-300 to-red-400 rounded-full flex items-center justify-center shadow-lg border-2 border-neutral-900">
+              <span className="text-xs font-bold text-black">
+                {folders.length}
+              </span>
+            </div>
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">Your Folders</h1>
-            <p className="text-neutral-400 text-sm">
+            <h1 className="text-3xl font-bold text-white tracking-tight">
+              Your Folders
+            </h1>
+            <p className="text-neutral-400 text-base mt-1">
               {folders.length} folder{folders.length !== 1 ? "s" : ""} •
               Organize your files
             </p>
@@ -54,55 +63,64 @@ const FoldersBox = () => {
       </div>
 
       {folders.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16 text-center">
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-red-300/10 to-red-200/10 flex items-center justify-center mb-4">
-            <Folder className="w-10 h-10 text-red-300/50" />
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <div className="relative mb-8">
+            <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-red-300/15 via-red-300/10 to-red-200/8 flex items-center justify-center shadow-2xl border border-red-300/20">
+              <Folder className="w-14 h-14 text-red-300/60" />
+            </div>
+            <div className="absolute -top-4 -right-4 w-10 h-10 bg-gradient-to-br from-red-300 to-red-400 rounded-full flex items-center justify-center animate-pulse shadow-lg">
+              <span className="text-lg font-bold text-black">+</span>
+            </div>
           </div>
-          <h3 className="text-lg font-semibold text-white mb-2">
+          <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">
             No folders yet
           </h3>
-          <p className="text-neutral-400 text-sm max-w-md">
+          <p className="text-neutral-400 text-lg max-w-lg leading-relaxed">
             Create your first folder to start organizing your files and
             documents
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {folders.map((folder: any, index: number) => (
             <div
               key={index}
               onClick={() => handleFolderClick(folder)}
-              className="group bg-gradient-to-br from-neutral-800/50 to-neutral-700/50 backdrop-blur-sm rounded-xl p-6 border border-neutral-600/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:border-red-300/30 cursor-pointer"
+              className="group relative bg-gradient-to-br from-neutral-800/60 via-neutral-700/50 to-neutral-800/60 backdrop-blur-xl rounded-2xl p-8 border border-neutral-600/50 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:border-red-300/40 cursor-pointer overflow-hidden"
             >
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-300/20 to-red-200/20 flex items-center justify-center group-hover:from-red-300/30 group-hover:to-red-200/30 transition-all duration-300">
-                  <Folder className="w-6 h-6 text-red-300" />
-                </div>
-                <button className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-1 rounded-lg hover:bg-neutral-600/50">
-                  <MoreVertical className="w-4 h-4 text-neutral-400" />
-                </button>
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-red-300/0 via-red-200/0 to-red-300/0 group-hover:from-red-300/8 group-hover:via-red-200/6 group-hover:to-red-300/8 transition-all duration-700"></div>
 
-              <div className="space-y-3">
-                <h3 className="font-semibold text-white text-lg group-hover:text-red-300 transition-colors duration-300 cursor-pointer">
-                  {folder.name}
-                </h3>
-
-                <p className="text-neutral-400 text-sm line-clamp-2">
-                  {folder.description || "No description provided"}
-                </p>
-
-                <div className="flex items-center justify-between pt-2 border-t border-neutral-600/30">
-                  <div className="flex items-center space-x-2 text-xs text-neutral-500">
-                    <Calendar className="w-3 h-3" />
-                    <span>
-                      {new Date(folder.created_at).toLocaleDateString()}
-                    </span>
+              <div className="relative z-10">
+                <div className="flex items-start justify-between mb-6">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-300/25 via-red-300/20 to-red-200/15 flex items-center justify-center shadow-lg border border-red-300/20 group-hover:from-red-300/35 group-hover:via-red-300/30 group-hover:to-red-200/25 transition-all duration-500">
+                    <Folder className="w-8 h-8 text-red-300" />
                   </div>
+                  <button className="opacity-0 group-hover:opacity-100 transition-all duration-500 p-2 rounded-xl hover:bg-neutral-600/50 hover:scale-110">
+                    <MoreVertical className="w-5 h-5 text-neutral-400" />
+                  </button>
+                </div>
 
-                  <div className="flex items-center space-x-1 text-xs text-neutral-500">
-                    <FileText className="w-3 h-3" />
-                    <span>0 files</span>
+                <div className="space-y-4">
+                  <h3 className="font-bold text-white text-xl group-hover:text-red-300 transition-colors duration-500 cursor-pointer tracking-tight">
+                    {folder.name}
+                  </h3>
+
+                  <p className="text-neutral-400 text-sm line-clamp-2 leading-relaxed">
+                    {folder.description || "No description provided"}
+                  </p>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-neutral-600/40">
+                    <div className="flex items-center space-x-2 text-xs text-neutral-500">
+                      <Calendar className="w-4 h-4" />
+                      <span className="font-medium">
+                        {new Date(folder.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center space-x-1 text-xs text-neutral-500">
+                      <FileText className="w-4 h-4" />
+                      <span className="font-medium">0 files</span>
+                    </div>
                   </div>
                 </div>
               </div>

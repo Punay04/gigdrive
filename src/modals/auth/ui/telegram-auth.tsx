@@ -15,20 +15,28 @@ const TelegramAuth = () => {
 
   return (
     <>
-      <div className="bg-neutral-800 max-w-[400px] max-h-[500px] p-10 rounded-md text-white flex flex-col justify-center items-center gap-4">
-        <h1 className="text-2xl">
+      <div className="bg-gradient-to-br from-neutral-800/90 via-neutral-700/80 to-neutral-800/90 backdrop-blur-xl max-w-[450px] max-h-[550px] p-12 rounded-3xl text-white flex flex-col justify-center items-center gap-6 border border-neutral-700/50 shadow-2xl">
+        <h1 className="text-3xl font-bold text-center tracking-tight">
           Let's get started with{" "}
-          <span className="font-bold text-red-300 underline underline-offset-auto">
+          <span className="font-bold text-red-300 bg-gradient-to-r from-red-300 to-red-400 bg-clip-text underline underline-offset-4">
             GigDrive
           </span>
         </h1>
-        <Image src={"/logo.png"} alt="" width={100} height={100} />
-        <div>
+        <div className="relative">
+          <Image
+            src={"/logo.png"}
+            alt=""
+            width={120}
+            height={120}
+            className="rounded-2xl shadow-xl"
+          />
+        </div>
+        <div className="w-full flex justify-center items-center">
           <LoginButton
             botUsername={process.env.NEXT_PUBLIC_BOT_USERNAME!}
             onAuthCallback={async (data) => {
               const res = await axios.post(
-                "https://67367bcfaccb.ngrok-free.app/api/telegramAuth",
+                "https://7c4d621147df.ngrok-free.app//api/telegramAuth",
                 {
                   ...data,
                 }
@@ -42,7 +50,7 @@ const TelegramAuth = () => {
               router.push("/dashboard");
             }}
             buttonSize="large"
-            cornerRadius={5}
+            cornerRadius={12}
             showAvatar={true}
             lang="en"
           />
