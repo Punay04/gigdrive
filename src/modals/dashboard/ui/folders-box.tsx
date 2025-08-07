@@ -9,10 +9,12 @@ import {
   TrashIcon,
   FolderRoot,
   Search,
+  RefreshCwIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const FoldersBox = () => {
   const [folders, setFolders] = useState<any[]>([]);
@@ -50,6 +52,7 @@ const FoldersBox = () => {
     const data = await fetchFolders();
     setFolders(data.folders || []);
     setViewFolders(data.folders || []);
+    toast("Folder Deleted");
   };
 
   const handleChange = (input: string) => {
@@ -62,6 +65,13 @@ const FoldersBox = () => {
     setViewFolders(
       folders.filter((folder) => folder.name.toLowerCase().startsWith(value))
     );
+  };
+
+  const handleRefresh = async () => {
+    const data = await fetchFolders();
+    setFolders(data.folders || []);
+    setViewFolders(data.folders || []);
+    toast("Folders Refreshed");
   };
 
   return (
@@ -89,13 +99,22 @@ const FoldersBox = () => {
           </div>
         </div>
         <div className="w-full sm:w-auto">
-          <div className="relative">
-            <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-400" />
-            <Input
-              placeholder="Search folders"
-              className="mt-3 h-11 w-full sm:w-72 md:w-80 rounded-xl bg-neutral-900/60 border border-border/60 text-white placeholder:text-neutral-500 pl-10 pr-4 focus-visible:border-red-300/60 focus-visible:ring-red-300/30 focus-visible:ring-[3px] shadow-sm"
-              onChange={(e) => handleChange(e.target.value)}
-            />
+          <div className="flex items-center gap-2">
+            <div className="relative flex-1 sm:flex-none">
+              <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-400" />
+              <Input
+                placeholder="Search folders"
+                className="mt-3 h-11 w-full sm:w-72 md:w-80 rounded-xl bg-neutral-900/60 border border-border/60 text-white placeholder:text-neutral-500 pl-10 pr-4 focus-visible:border-red-300/60 focus-visible:ring-red-300/30 focus-visible:ring-[3px] shadow-sm"
+                onChange={(e) => handleChange(e.target.value)}
+              />
+            </div>
+            <Button
+              onClick={handleRefresh}
+              variant={"outline"}
+              className="mt-3 h-11 w-11 sm:w-auto rounded-xl bg-neutral-900/60 border border-border/60 text-white hover:border-red-300/50 hover:bg-neutral-900/70 shadow-sm transition-colors flex items-center justify-center cursor-pointer"
+            >
+              <RefreshCwIcon className="w-4 h-4 text-red-300" />
+            </Button>
           </div>
         </div>
       </div>
