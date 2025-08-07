@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     console.log("File name:", file.name);
     console.log("File size:", file.size);
 
-    const chatId = "-1002841408801";
+    const chatId = process.env.TELEGRAM_CHAT_ID!;
 
     const fileOptions = {
       filename: file.name,
@@ -57,10 +57,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const fileUpload = await bot.sendDocument(chatId, buffer, {}, fileOptions);
+    const FileUpload = await bot.sendDocument(chatId, buffer, {}, fileOptions);
+
+    console.log("FileUpload : " + FileUpload);
 
     const fileUrl = await axios.get(
-      `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileUpload.document?.file_id}`
+      `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/getFile?file_id=${FileUpload.document?.file_id}`
     );
 
     await supabase.from("Files").insert({
@@ -68,16 +70,18 @@ export async function POST(req: NextRequest) {
       fileSize: file.size,
       fileType: file.type,
       folderId: Number(folderId),
-      fileUploadId: fileUpload.document?.file_id,
+      fileUploadId: FileUpload.document?.file_id,
       fileLink: fileUrl.data.result.file_path,
       userId,
+      messageId: FileUpload.message_id,
+      thumbNailUrl: FileUpload.document?.thumb?.file_id,
     });
 
     return NextResponse.json({
       message: "File uploaded successfully",
       fileName: file.name,
       fileSize: file.size,
-      fileUpload,
+      FileUpload,
     });
   } catch (error) {
     console.log("Error uploading file:", error);

@@ -52,16 +52,16 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex items-center justify-between bg-gradient-to-r from-neutral-900/90 via-neutral-800/80 to-neutral-900/90 backdrop-blur-xl rounded-3xl p-8 border border-neutral-700/60 shadow-xl">
+      <div className="flex items-center justify-between bg-gradient-to-r from-neutral-900/90 via-neutral-800/80 to-neutral-900/90 backdrop-blur-xl rounded-3xl p-8 border border-border/60 shadow-xl">
         <div className="flex items-center space-x-4">
           <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-300/30 via-red-300/25 to-red-200/20 flex items-center justify-center shadow-lg border border-red-300/25">
             <FileText className="w-7 h-7 text-red-300" />
           </div>
           <div>
-            <h2 className="text-3xl font-bold text-white tracking-tight">
+            <h2 className="text-3xl font-bold text-foreground tracking-tight">
               Files ({files.length})
             </h2>
-            <p className="text-neutral-400 text-base mt-1">
+            <p className="text-muted-foreground text-base mt-1">
               {files.length === 0
                 ? "No files uploaded yet"
                 : "Your uploaded files"}
@@ -71,11 +71,11 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
       </div>
 
       {files.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center bg-gradient-to-br from-neutral-800/70 to-neutral-700/60 backdrop-blur-xl rounded-3xl border border-neutral-600/60 shadow-xl">
+        <div className="flex flex-col items-center justify-center py-20 text-center bg-gradient-to-br from-neutral-900/80 to-neutral-800/70 backdrop-blur-xl rounded-3xl border border-border/60 shadow-xl">
           <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-red-300/20 via-red-300/15 to-red-200/10 flex items-center justify-center mb-8 shadow-xl border border-red-300/25">
             <FileText className="w-14 h-14 text-red-300/70" />
           </div>
-          <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">
+          <h3 className="text-2xl font-bold text-foreground mb-4 tracking-tight">
             No files yet
           </h3>
           <p className="text-neutral-400 text-lg max-w-md leading-relaxed">
@@ -87,7 +87,7 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
           {files.map((file: any) => (
             <div
               key={file.id}
-              className="group relative bg-gradient-to-br from-neutral-800/70 via-neutral-700/60 to-neutral-800/70 backdrop-blur-xl rounded-3xl p-8 border border-neutral-600/60 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:border-red-300/50 cursor-pointer overflow-hidden"
+              className="group relative bg-gradient-to-br from-neutral-900/80 via-neutral-800/70 to-neutral-900/80 backdrop-blur-xl rounded-3xl p-8 border border-border/60 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:border-red-300/50 cursor-pointer overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-red-300/0 via-red-200/0 to-red-300/0 group-hover:from-red-300/10 group-hover:via-red-200/8 group-hover:to-red-300/10 transition-all duration-700"></div>
 
@@ -105,11 +105,11 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
                 </div>
 
                 <div className="space-y-4">
-                  <h3 className="font-bold text-white text-xl group-hover:text-red-300 transition-colors duration-500 tracking-tight line-clamp-1">
+                  <h3 className="font-bold text-foreground text-xl group-hover:text-red-300 transition-colors duration-500 tracking-tight line-clamp-1">
                     {file.fileName}
                   </h3>
 
-                  <div className="flex items-center space-x-2 text-sm text-neutral-500">
+                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                     <HardDrive className="w-4 h-4" />
                     <span className="font-medium">
                       {formatFileSize(file.fileSize)}
@@ -117,7 +117,7 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
                   </div>
 
                   <div className="flex items-center justify-between pt-4 border-t border-neutral-600/50">
-                    <div className="flex items-center space-x-2 text-xs text-neutral-500">
+                    <div className="flex items-center space-x-2 text-xs text-muted-foreground">
                       <Calendar className="w-4 h-4" />
                       <span className="font-medium">
                         {new Date(file.created_at).toLocaleDateString()}

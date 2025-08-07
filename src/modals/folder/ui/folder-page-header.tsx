@@ -56,7 +56,7 @@ const FolderPageHeader = ({
   };
 
   return (
-    <div className="flex justify-between items-center bg-gradient-to-r from-neutral-900/90 via-neutral-800/80 to-neutral-900/90 backdrop-blur-xl rounded-3xl p-8 border border-neutral-700/60 shadow-xl mb-8">
+    <div className="flex justify-between items-center bg-gradient-to-r from-neutral-900/90 via-neutral-800/80 to-neutral-900/90 backdrop-blur-xl rounded-3xl p-8 border border-border/60 shadow-xl mb-8">
       <div className="flex items-center space-x-4">
         <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-300/30 via-red-300/25 to-red-200/20 flex items-center justify-center shadow-lg border border-red-300/25">
           <UploadIcon className="w-7 h-7 text-red-300" />
@@ -65,7 +65,7 @@ const FolderPageHeader = ({
           <h1 className="text-3xl font-bold text-white tracking-tight">
             Files in folder
           </h1>
-          <p className="text-neutral-400 text-base mt-1">
+          <p className="text-muted-foreground text-base mt-1">
             Upload and manage your files
           </p>
         </div>

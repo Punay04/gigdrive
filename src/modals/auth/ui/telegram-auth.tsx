@@ -36,7 +36,7 @@ const TelegramAuth = () => {
             botUsername={process.env.NEXT_PUBLIC_BOT_USERNAME!}
             onAuthCallback={async (data) => {
               const res = await axios.post(
-                "https://7c4d621147df.ngrok-free.app//api/telegramAuth",
+                "https://ff9fbfa32d9d.ngrok-free.app/api/telegramAuth",
                 {
                   ...data,
                 }

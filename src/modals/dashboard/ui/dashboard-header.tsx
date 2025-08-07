@@ -14,10 +14,10 @@ const DashboardHeader = () => {
   return (
     <>
       <FolderDialog open={open} onOpenChange={setOpen} />
-      <div className="p-6 flex justify-between items-center bg-gradient-to-r from-neutral-900/80 via-neutral-800/70 to-neutral-900/80 backdrop-blur-xl rounded-2xl border border-neutral-700/50 shadow-xl mx-6 mt-6">
+      <div className="p-6 flex justify-between items-center bg-gradient-to-r from-neutral-900/80 via-neutral-800/70 to-neutral-900/80 backdrop-blur-xl rounded-2xl border border-border/60 shadow-xl mx-6 mt-6">
         <h1 className="text-3xl font-bold text-white tracking-tight">
           Welcome to{" "}
-          <span className="font-bold text-red-300 bg-gradient-to-r from-red-300 to-red-400 bg-clip-text text-transparent">
+          <span className="font-bold bg-gradient-to-r from-red-300 to-red-400 bg-clip-text text-transparent">
             GigDrive
           </span>{" "}
           <span className="text-red-300">{userData.name}</span>
@@ -41,7 +41,7 @@ const DashboardHeader = () => {
           >
             Log out
           </Button>
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-300/25 via-red-300/20 to-red-200/15 text-red-300 font-bold text-xl flex justify-center items-center hover:bg-red-300 hover:text-black cursor-auto transition-all duration-300 shadow-lg border border-red-300/20">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-300/25 via-red-300/20 to-red-200/15 text-red-300 font-bold text-xl flex justify-center items-center cursor-auto transition-all duration-300 shadow-lg border border-red-300/20">
             {userData.name[0]}
           </div>
         </div>

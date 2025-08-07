@@ -59,10 +59,10 @@ const FolderForm = () => {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-white">Name</FormLabel>
+                <FormLabel className="text-neutral-200">Name</FormLabel>
                 <FormControl>
                   <Input
-                    className="text-white"
+                    className="bg-neutral-900/60 border-neutral-700 text-white placeholder:text-neutral-500"
                     {...field}
                     placeholder="Folder Name"
                   />
@@ -77,10 +77,10 @@ const FolderForm = () => {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-white">Description</FormLabel>
+                <FormLabel className="text-neutral-200">Description</FormLabel>
                 <FormControl>
                   <Input
-                    className="text-white"
+                    className="bg-neutral-900/60 border-neutral-700 text-white placeholder:text-neutral-500"
                     {...field}
                     placeholder="Folder Description"
                   />
@@ -90,7 +90,11 @@ const FolderForm = () => {
             )}
           />
           <br />
-          <Button variant={"destructive"} type="submit">
+          <Button
+            variant={"destructive"}
+            type="submit"
+            className="px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
+          >
             <span className="text-black cursor-pointer">Create Folder</span>
           </Button>
         </form>

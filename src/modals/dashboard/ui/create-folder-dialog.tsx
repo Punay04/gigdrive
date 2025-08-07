@@ -15,10 +15,12 @@ import FolderForm from "./folder-form";
 const FolderDialog = ({ open, onOpenChange }: Props) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-neutral-800">
+      <DialogContent className="bg-gradient-to-br from-neutral-900/90 via-neutral-800/80 to-neutral-900/90 backdrop-blur-xl border border-border/60 rounded-2xl shadow-2xl">
         <DialogHeader>
-          <DialogTitle className="text-red-300">Create Folder</DialogTitle>
-          <DialogDescription className="text-white">
+          <DialogTitle className="text-red-300 tracking-tight">
+            Create Folder
+          </DialogTitle>
+          <DialogDescription className="text-muted-foreground">
             Create a new folder in the current directory
           </DialogDescription>
         </DialogHeader>

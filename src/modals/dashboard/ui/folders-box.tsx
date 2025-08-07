@@ -2,8 +2,9 @@
 import { useStore } from "@/zustand/store";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Folder, MoreVertical, Calendar, FileText } from "lucide-react";
+import { Folder, Calendar, FileText, TrashIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const FoldersBox = () => {
   const [folders, setFolders] = useState([]);
@@ -28,7 +29,7 @@ const FoldersBox = () => {
     if (userId) {
       fetchFolders();
     }
-  }, [userId]);
+  }, [userId, setFolders, folders]);
 
   const router = useRouter();
 
@@ -36,9 +37,14 @@ const FoldersBox = () => {
     router.push(`/dashboard/folder/${folder.id}`);
   };
 
+  const handleFolderDelete = async (folderName: string) => {
+    const res = await axios.post("/api/deleteFolder", { folderName });
+    const data = await res.data;
+    toast(`${data.message}`);
+  };
+
   return (
-    <div className="flex flex-col gap-8 mt-6 h-full mx-6 mb-6 bg-gradient-to-br from-neutral-900/95 via-neutral-800/90 to-neutral-900/95 backdrop-blur-xl rounded-3xl p-10 border border-neutral-700/60 shadow-2xl">
-      {/* Section Header */}
+    <div className="flex flex-col gap-8 mt-6 h-full mx-6 mb-6 bg-gradient-to-br from-neutral-900/95 via-neutral-800/90 to-neutral-900/95 backdrop-blur-xl rounded-3xl p-10 border border-border/60 shadow-2xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className="relative">
@@ -55,7 +61,7 @@ const FoldersBox = () => {
             <h1 className="text-4xl font-bold text-white tracking-tight">
               Your Folders
             </h1>
-            <p className="text-neutral-400 text-lg mt-2">
+            <p className="text-muted-foreground text-lg mt-2">
               {folders.length} folder{folders.length !== 1 ? "s" : ""} •
               Organize your files
             </p>
@@ -76,7 +82,7 @@ const FoldersBox = () => {
           <h3 className="text-3xl font-bold text-white mb-6 tracking-tight">
             No folders yet
           </h3>
-          <p className="text-neutral-400 text-xl max-w-lg leading-relaxed">
+          <p className="text-muted-foreground text-xl max-w-lg leading-relaxed">
             Create your first folder to start organizing your files and
             documents
           </p>
@@ -86,10 +92,8 @@ const FoldersBox = () => {
           {folders.map((folder: any, index: number) => (
             <div
               key={index}
-              onClick={() => handleFolderClick(folder)}
-              className="group relative bg-gradient-to-br from-neutral-800/70 via-neutral-700/60 to-neutral-800/70 backdrop-blur-xl rounded-3xl p-8 border border-neutral-600/60 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:border-red-300/50 cursor-pointer overflow-hidden"
+              className="group relative bg-gradient-to-br from-neutral-900/80 via-neutral-800/70 to-neutral-900/80 backdrop-blur-xl rounded-3xl p-8 border border-border/60 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:border-red-300/50 cursor-pointer overflow-hidden"
             >
-              {/* Animated background gradient */}
               <div className="absolute inset-0 bg-gradient-to-r from-red-300/0 via-red-200/0 to-red-300/0 group-hover:from-red-300/10 group-hover:via-red-200/8 group-hover:to-red-300/10 transition-all duration-700"></div>
 
               <div className="relative z-10">
@@ -97,29 +101,35 @@ const FoldersBox = () => {
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-300/30 via-red-300/25 to-red-200/20 flex items-center justify-center shadow-lg border border-red-300/25 group-hover:from-red-300/40 group-hover:via-red-300/35 group-hover:to-red-200/30 transition-all duration-500">
                     <Folder className="w-8 h-8 text-red-300" />
                   </div>
-                  <button className="opacity-0 group-hover:opacity-100 transition-all duration-500 p-2 rounded-xl hover:bg-neutral-600/50 hover:scale-110">
-                    <MoreVertical className="w-5 h-5 text-neutral-400" />
+                  <button
+                    className="duration-500 p-2 rounded-xl bg-red-300/30 hover:scale-110 cursor-pointer"
+                    onClick={() => handleFolderDelete(folder.name)}
+                  >
+                    <TrashIcon className="text-red-300 " />
                   </button>
                 </div>
 
                 <div className="space-y-4">
-                  <h3 className="font-bold text-white text-xl group-hover:text-red-300 transition-colors duration-500 tracking-tight">
+                  <h3
+                    className="font-bold text-white text-xl group-hover:text-red-300 transition-colors duration-500 tracking-tight"
+                    onClick={() => handleFolderClick(folder)}
+                  >
                     {folder.name}
                   </h3>
 
-                  <p className="text-neutral-400 text-sm line-clamp-2 leading-relaxed">
+                  <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">
                     {folder.description || "No description provided"}
                   </p>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-neutral-600/50">
-                    <div className="flex items-center space-x-2 text-xs text-neutral-500">
+                  <div className="flex items-center justify-between pt-4 border-t border-border/60">
+                    <div className="flex items-center space-x-2 text-xs text-muted-foreground">
                       <Calendar className="w-4 h-4" />
                       <span className="font-medium">
                         {new Date(folder.created_at).toLocaleDateString()}
                       </span>
                     </div>
 
-                    <div className="flex items-center space-x-1 text-xs text-neutral-500">
+                    <div className="flex items-center space-x-1 text-xs text-muted-foreground">
                       <FileText className="w-4 h-4" />
                       <span className="font-medium">0 files</span>
                     </div>
