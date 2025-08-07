@@ -56,7 +56,7 @@ export default function LandingPage() {
 
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(75rem_40rem_at_50%_-10rem,oklch(0.269_0_0/.25),transparent_60%)]" />
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:py-28">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-24 lg:py-28">
           <div className="grid items-center gap-10 sm:gap-16 lg:grid-cols-2">
             <div className="space-y-6">
               <h1 className="text-4xl/tight font-bold tracking-tight sm:text-5xl/tight">
@@ -91,7 +91,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="relative mx-auto w-full max-w-xl rounded-3xl border border-border/70 bg-gradient-to-br from-neutral-900/80 via-neutral-800/70 to-neutral-900/80 p-6 shadow-2xl sm:p-8">
+            <div className="relative mx-auto w-full max-w-xl rounded-3xl border border-border/70 bg-gradient-to-br from-neutral-900/80 via-neutral-800/70 to-neutral-900/80 p-5 sm:p-6 lg:p-8 shadow-2xl">
               <div className="grid grid-cols-2 gap-4 sm:gap-6">
                 <FeatureCard
                   icon={<Cloud className="size-5" />}
@@ -134,7 +134,7 @@ export default function LandingPage() {
       </section>
 
       <section className="border-t border-border/60">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16 lg:py-20">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
               How GigDrive works
@@ -189,9 +189,21 @@ export default function LandingPage() {
             </span>
           </p>
           <div className="flex items-center gap-4">
-            <Link href="/auth" className="hover:text-foreground">
-              Sign in
-            </Link>
+            {isLoggedIn && (
+              <div
+                className="cursor-pointer hover:text-foreground"
+                onClick={() => {
+                  logout();
+                }}
+              >
+                Logout
+              </div>
+            )}
+            {!isLoggedIn && (
+              <Link href="/auth" className="hover:text-foreground">
+                Sign in
+              </Link>
+            )}
             <Link href="/dashboard" className="hover:text-foreground">
               Dashboard
             </Link>

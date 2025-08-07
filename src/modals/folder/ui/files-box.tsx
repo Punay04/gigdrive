@@ -8,26 +8,40 @@ import {
   Calendar,
   HardDrive,
   TrashIcon,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const FilesBox = ({ folderId }: { folderId: number }) => {
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<any[]>([]);
+  const [viewFiles, setViewFiles] = useState<any[]>([]);
   const userId = useStore((state) => state.userData.telegramId);
 
-  useEffect(() => {
-    const getFiles = async () => {
-      const res = await axios.post("/api/getFiles", {
-        folderId: folderId,
-        userId,
-      });
+  const getFiles = async () => {
+    const res = await axios.post("/api/getFiles", {
+      folderId: folderId,
+      userId,
+    });
+    const data = await res.data;
+    return data;
+  };
 
-      const data = await res.data;
-      setFiles(data.files || []);
+  useEffect(() => {
+    const fetchFiles = async () => {
+      try {
+        const data = await getFiles();
+        setFiles(data.files || []);
+        setViewFiles(data.files || []);
+      } catch (error) {
+        console.error("Error fetching files:", error);
+      }
     };
 
-    getFiles();
-  }, [folderId, userId, files]);
+    if (folderId && userId) {
+      fetchFiles();
+    }
+  }, [folderId, userId]);
 
   const botToken = process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN;
 
@@ -44,16 +58,31 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
       await axios.post("/api/deleteFile", {
         fileId,
       });
-      setFiles((prevFiles) => prevFiles.filter((file) => file.id !== fileId));
+      const data = await getFiles();
+      setFiles(data.files || []);
+      setViewFiles(data.files || []);
     } catch (error) {
       console.error("Error deleting file:", error);
     }
   };
 
+  const handleChange = (input: string) => {
+    const value = input.trim().toLowerCase();
+
+    if (value === "") {
+      setViewFiles(files);
+      return;
+    }
+
+    setViewFiles(
+      files.filter((file) => file.fileName.toLowerCase().startsWith(value))
+    );
+  };
+
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex items-center justify-between bg-gradient-to-r from-neutral-900/90 via-neutral-800/80 to-neutral-900/90 backdrop-blur-xl rounded-3xl p-8 border border-border/60 shadow-xl">
-        <div className="flex items-center space-x-4">
+    <div className="flex flex-col gap-8 mt-6 h-full mx-6 mb-6 bg-gradient-to-br from-neutral-900/95 via-neutral-800/90 to-neutral-900/95 backdrop-blur-xl rounded-3xl p-10 border border-border/60 shadow-2xl">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-start sm:items-center gap-4">
           <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-300/30 via-red-300/25 to-red-200/20 flex items-center justify-center shadow-lg border border-red-300/25">
             <FileText className="w-7 h-7 text-red-300" />
           </div>
@@ -68,10 +97,19 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
             </p>
           </div>
         </div>
+        <div className="w-full sm:w-auto">
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-400" />
+            <Input
+              placeholder="Search files"
+              className="mt-3 h-11 w-full sm:w-72 md:w-80 rounded-xl bg-neutral-900/60 border border-border/60 text-white placeholder:text-neutral-500 pl-10 pr-4 focus-visible:border-red-300/60 focus-visible:ring-red-300/30 focus-visible:ring-[3px] shadow-sm"
+              onChange={(e) => handleChange(e.target.value)}
+            />
+          </div>
+        </div>
       </div>
-
-      {files.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center bg-gradient-to-br from-neutral-900/80 to-neutral-800/70 backdrop-blur-xl rounded-3xl border border-border/60 shadow-xl">
+      {files.length === 0 || viewFiles.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 text-center">
           <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-red-300/20 via-red-300/15 to-red-200/10 flex items-center justify-center mb-8 shadow-xl border border-red-300/25">
             <FileText className="w-14 h-14 text-red-300/70" />
           </div>
@@ -83,11 +121,11 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {files.map((file: any) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+          {viewFiles.map((file: any) => (
             <div
               key={file.id}
-              className="group relative bg-gradient-to-br from-neutral-900/80 via-neutral-800/70 to-neutral-900/80 backdrop-blur-xl rounded-3xl p-8 border border-border/60 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:border-red-300/50 cursor-pointer overflow-hidden"
+              className="group relative bg-gradient-to-br from-neutral-900/80 via-neutral-800/70 to-neutral-900/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-border/60 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:border-red-300/50 cursor-pointer overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-red-300/0 via-red-200/0 to-red-300/0 group-hover:from-red-300/10 group-hover:via-red-200/8 group-hover:to-red-300/10 transition-all duration-700"></div>
 

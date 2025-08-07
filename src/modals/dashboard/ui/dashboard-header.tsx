@@ -37,9 +37,9 @@ const DashboardHeader = () => {
               logout();
               router.push("/auth");
             }}
-            variant={"secondary"}
+            variant={"default"}
           >
-            Log out
+            Logout
           </Button>
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-300/25 via-red-300/20 to-red-200/15 text-red-300 font-bold text-xl flex justify-center items-center cursor-auto transition-all duration-300 shadow-lg border border-red-300/20">
             {userData.name[0]}

@@ -15,7 +15,7 @@ const TelegramAuth = () => {
 
   return (
     <>
-      <div className="bg-gradient-to-br from-neutral-800/90 via-neutral-700/80 to-neutral-800/90 backdrop-blur-xl max-w-[450px] max-h-[550px] p-12 rounded-3xl text-white flex flex-col justify-center items-center gap-6 border border-neutral-700/50 shadow-2xl">
+      <div className="bg-gradient-to-br from-neutral-900/90 via-neutral-800/80 to-neutral-900/90 backdrop-blur-xl w-full p-8 sm:p-10 rounded-3xl text-white flex flex-col justify-center items-center gap-6 border border-border/60 shadow-2xl">
         <h1 className="text-3xl font-bold text-center tracking-tight">
           Let's get started with{" "}
           <span className="font-bold text-red-300 bg-gradient-to-r from-red-300 to-red-400 bg-clip-text underline underline-offset-4">
@@ -25,9 +25,9 @@ const TelegramAuth = () => {
         <div className="relative">
           <Image
             src={"/logo.png"}
-            alt=""
-            width={120}
-            height={120}
+            alt="GigDrive logo"
+            width={100}
+            height={100}
             className="rounded-2xl shadow-xl"
           />
         </div>

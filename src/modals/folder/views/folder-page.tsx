@@ -9,7 +9,7 @@ const FolderPage = ({ folderId }: { folderId: number }) => {
     filesBoxRef.current?.refetchFiles();
   };
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 p-6 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 px-4 py-6 sm:px-6 lg:px-8 flex flex-col">
       <FolderPageHeader
         onUploadComplete={handleUploadComplete}
         folderId={folderId}
