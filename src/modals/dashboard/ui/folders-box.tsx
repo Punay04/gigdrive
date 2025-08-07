@@ -76,11 +76,11 @@ const FoldersBox = () => {
 
   return (
     <div className="flex flex-col gap-8 mt-6 h-full mx-6 mb-6 bg-gradient-to-br from-neutral-900/95 via-neutral-800/90 to-neutral-900/95 backdrop-blur-xl rounded-3xl p-10 border border-border/60 shadow-2xl">
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center space-x-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-start sm:items-center gap-4">
           <div className="relative">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-300/30 via-red-300/25 to-red-200/20 flex items-center justify-center shadow-xl border border-red-300/25">
-              <Folder className="w-8 h-8 text-red-300" />
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-300/30 via-red-300/25 to-red-200/20 flex items-center justify-center shadow-xl border border-red-300/25">
+              <Folder className="w-7 h-7 text-red-300" />
             </div>
             <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-red-300 to-red-400 rounded-full flex items-center justify-center shadow-lg border-2 border-neutral-900">
               <span className="text-sm font-bold text-black">
@@ -89,29 +89,29 @@ const FoldersBox = () => {
             </div>
           </div>
           <div>
-            <h1 className="text-4xl font-bold text-white tracking-tight">
+            <h1 className="text-3xl font-bold text-foreground tracking-tight">
               Your Folders
             </h1>
-            <p className="text-muted-foreground text-lg mt-2">
+            <p className="text-muted-foreground text-base mt-1">
               {folders.length} folder{folders.length !== 1 ? "s" : ""} •
               Organize your files
             </p>
           </div>
         </div>
         <div className="w-full sm:w-auto">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
             <div className="relative flex-1 sm:flex-none">
               <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-400" />
               <Input
                 placeholder="Search folders"
-                className="mt-3 h-11 w-full sm:w-72 md:w-80 rounded-xl bg-neutral-900/60 border border-border/60 text-white placeholder:text-neutral-500 pl-10 pr-4 focus-visible:border-red-300/60 focus-visible:ring-red-300/30 focus-visible:ring-[3px] shadow-sm"
+                className="mt-2 sm:mt-3 h-11 w-full sm:w-72 md:w-80 rounded-xl bg-neutral-900/60 border border-border/60 text-white placeholder:text-neutral-500 pl-10 pr-4 focus-visible:border-red-300/60 focus-visible:ring-red-300/30 focus-visible:ring-[3px] shadow-sm"
                 onChange={(e) => handleChange(e.target.value)}
               />
             </div>
             <Button
               onClick={handleRefresh}
               variant={"outline"}
-              className="mt-3 h-11 w-11 sm:w-auto rounded-xl bg-neutral-900/60 border border-border/60 text-white hover:border-red-300/50 hover:bg-neutral-900/70 shadow-sm transition-colors flex items-center justify-center cursor-pointer"
+              className="mt-2 sm:mt-3 h-11 w-full sm:w-11 rounded-xl bg-neutral-900/60 border border-border/60 text-white hover:border-red-300/50 hover:bg-neutral-900/70 shadow-sm transition-colors flex items-center justify-center cursor-pointer"
             >
               <RefreshCwIcon className="w-4 h-4 text-red-300" />
             </Button>

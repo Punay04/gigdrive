@@ -56,13 +56,13 @@ const FolderPageHeader = ({
   };
 
   return (
-    <div className="flex justify-between items-center bg-gradient-to-r from-neutral-900/90 via-neutral-800/80 to-neutral-900/90 backdrop-blur-xl rounded-3xl p-8 border border-border/60 shadow-xl mb-8">
-      <div className="flex items-center space-x-4">
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-300/30 via-red-300/25 to-red-200/20 flex items-center justify-center shadow-lg border border-red-300/25">
-          <UploadIcon className="w-7 h-7 text-red-300" />
+    <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center bg-gradient-to-r from-neutral-900/90 via-neutral-800/80 to-neutral-900/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-border/60 shadow-xl mb-6 sm:mb-8">
+      <div className="flex items-start sm:items-center gap-4">
+        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-red-300/30 via-red-300/25 to-red-200/20 flex items-center justify-center shadow-lg border border-red-300/25">
+          <UploadIcon className="w-6 h-6 sm:w-7 sm:h-7 text-red-300" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
             Files in folder
           </h1>
           <p className="text-muted-foreground text-base mt-1">
@@ -70,11 +70,11 @@ const FolderPageHeader = ({
           </p>
         </div>
       </div>
-      <div>
+      <div className="flex justify-end">
         <Button
           variant={"destructive"}
           className={cn(
-            "flex flex-row text-black px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer",
+            "flex flex-row text-black px-5 py-2.5 sm:px-8 sm:py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer",
             uploading && "pointer-events-none bg-red-300/80"
           )}
           onClick={handleClick}

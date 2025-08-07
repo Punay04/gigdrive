@@ -15,7 +15,7 @@ import FolderForm from "./folder-form";
 const FolderDialog = ({ open, onOpenChange }: Props) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-gradient-to-br from-neutral-900/90 via-neutral-800/80 to-neutral-900/90 backdrop-blur-xl border border-border/60 rounded-2xl shadow-2xl">
+      <DialogContent className="bg-gradient-to-br from-neutral-900/90 via-neutral-800/80 to-neutral-900/90 backdrop-blur-xl border border-border/60 rounded-2xl shadow-2xl w-[calc(100%-2rem)] sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="text-red-300 tracking-tight">
             Create Folder
