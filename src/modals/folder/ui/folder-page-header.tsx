@@ -31,6 +31,11 @@ const FolderPageHeader = ({
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (file.size > 50 * 1024 * 1024) {
+      toast("File too large. Max limit is 50MB for Telegram uploads.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("file", file);
     formData.append("folderId", String(folderId));

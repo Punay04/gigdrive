@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     const folders = await supabase
       .from("Folders")
-      .select()
+      .select("*,Files(*)")
       .eq("userId", String(userId))
       .order("created_at", { ascending: false });
 

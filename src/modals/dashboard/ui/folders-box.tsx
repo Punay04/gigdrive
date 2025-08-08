@@ -33,6 +33,8 @@ const FoldersBox = () => {
   useEffect(() => {
     const fetch = async () => {
       const data = await fetchFolders();
+      console.log(data);
+
       setFolders(data.folders || []);
       setViewFolders(data.folders || []);
     };
@@ -155,7 +157,7 @@ const FoldersBox = () => {
                     className="duration-500 p-2 rounded-xl bg-red-300/30 hover:scale-110 cursor-pointer"
                     onClick={() => handleFolderDelete(folder.name)}
                   >
-                    <TrashIcon className="text-red-300 " />
+                    <TrashIcon className="text-white " />
                   </button>
                 </div>
 
@@ -181,7 +183,10 @@ const FoldersBox = () => {
 
                     <div className="flex items-center space-x-1 text-xs text-muted-foreground">
                       <FileText className="w-4 h-4" />
-                      <span className="font-medium">0 files</span>
+                      <span className="font-medium">
+                        {folder.Files?.length || 0}{" "}
+                        {folder.Files?.length > 1 ? "files" : "file"}
+                      </span>
                     </div>
                   </div>
                 </div>

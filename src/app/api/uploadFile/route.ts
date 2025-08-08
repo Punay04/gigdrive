@@ -40,11 +40,6 @@ export async function POST(req: NextRequest) {
 
     const chatId = process.env.TELEGRAM_CHAT_ID!;
 
-    const fileOptions = {
-      filename: file.name,
-      contentType: file.type,
-    };
-
     const existingFile = await supabase
       .from("Files")
       .select()
