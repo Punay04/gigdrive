@@ -36,6 +36,7 @@ export async function POST(req: NextRequest) {
 
     console.log("File name:", file.name);
     console.log("File size:", file.size);
+    console.log("File type:", file.type);
 
     const chatId = process.env.TELEGRAM_CHAT_ID!;
 
@@ -52,17 +53,49 @@ export async function POST(req: NextRequest) {
 
     if (existingFile.data) {
       return NextResponse.json(
-        { message: "File already exists" },
+        { message: "File already exists", success: false },
         { status: 400 }
       );
     }
 
-    const FileUpload = await bot.sendDocument(chatId, buffer, {}, fileOptions);
+    let FileUpload;
+    if (file.type.startsWith("video")) {
+      FileUpload = await bot.sendVideo(
+        chatId,
+        buffer,
+        {},
+        {
+          filename: file.name,
+          contentType: file.type,
+        }
+      );
+    } else {
+      FileUpload = await bot.sendDocument(
+        chatId,
+        buffer,
+        {},
+        {
+          filename: file.name,
+          contentType: file.type,
+        }
+      );
+    }
 
     console.log("FileUpload : " + FileUpload);
 
+    const fileId = file.type.startsWith("video")
+      ? FileUpload.video?.file_id
+      : FileUpload.document?.file_id;
+
+    if (!fileId) {
+      return NextResponse.json(
+        { message: "No file_id found" },
+        { status: 500 }
+      );
+    }
+
     const fileUrl = await axios.get(
-      `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/getFile?file_id=${FileUpload.document?.file_id}`
+      `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`
     );
 
     await supabase.from("Files").insert({

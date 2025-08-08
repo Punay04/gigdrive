@@ -37,22 +37,23 @@ const FolderPageHeader = ({
     formData.append("userId", String(userId));
     setUploading(true);
 
-    const res = await axios.post("/api/uploadFile", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    try {
+      const res = await axios.post("/api/uploadFile", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-    if (!res.data.success) {
+      const data = res.data;
       setUploading(false);
-      toast(`${res.data.message}`);
-      return;
+      toast(`${data.message}`);
+      onUploadComplete();
+    } catch (error: any) {
+      setUploading(false);
+      const message =
+        error.response?.data?.message || "Something went wrong while uploading";
+      toast(message);
     }
-
-    const data = await res.data;
-    setUploading(false);
-    toast(`${data.message}`);
-    onUploadComplete();
   };
 
   return (
