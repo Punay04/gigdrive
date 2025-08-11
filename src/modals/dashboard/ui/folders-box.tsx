@@ -2,12 +2,12 @@
 import { useStore } from "@/zustand/store";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import type { FolderItem } from "@/types/models";
 import {
   Folder,
   Calendar,
   FileText,
   TrashIcon,
-  FolderRoot,
   Search,
   RefreshCwIcon,
 } from "lucide-react";
@@ -17,8 +17,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const FoldersBox = () => {
-  const [folders, setFolders] = useState<any[]>([]);
-  const [viewFolders, setViewFolders] = useState<any[]>([]);
+  const [folders, setFolders] = useState<FolderItem[]>([]);
+  const [viewFolders, setViewFolders] = useState<FolderItem[]>([]);
   const userId = useStore((state) => state.userData.telegramId);
   console.log("userId:", userId);
 
@@ -45,7 +45,7 @@ const FoldersBox = () => {
 
   const router = useRouter();
 
-  const handleFolderClick = (folder: any) => {
+  const handleFolderClick = (folder: FolderItem) => {
     router.push(`/dashboard/folder/${folder.id}`);
   };
 
@@ -102,11 +102,11 @@ const FoldersBox = () => {
         </div>
         <div className="w-full sm:w-auto">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <div className="relative flex-1 sm:flex-none">
+            <div className="relative flex-1 sm:flex-none mt-2 sm:mt-3">
               <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-400" />
               <Input
                 placeholder="Search folders"
-                className="mt-2 sm:mt-3 h-11 w-full sm:w-72 md:w-80 rounded-xl bg-neutral-900/60 border border-border/60 text-white placeholder:text-neutral-500 pl-10 pr-4 focus-visible:border-red-300/60 focus-visible:ring-red-300/30 focus-visible:ring-[3px] shadow-sm"
+                className="h-11 w-full sm:w-72 md:w-80 rounded-xl bg-neutral-900/60 border border-border/60 text-white placeholder:text-neutral-500 pl-10 pr-4 focus-visible:border-red-300/60 focus-visible:ring-red-300/30 focus-visible:ring-[3px] shadow-sm"
                 onChange={(e) => handleChange(e.target.value)}
               />
             </div>
@@ -141,7 +141,7 @@ const FoldersBox = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {viewFolders.map((folder: any, index: number) => (
+          {viewFolders.map((folder: FolderItem, index: number) => (
             <div
               key={index}
               className="group relative bg-gradient-to-br from-neutral-900/80 via-neutral-800/70 to-neutral-900/80 backdrop-blur-xl rounded-3xl p-8 border border-border/60 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:border-red-300/50 cursor-pointer overflow-hidden"
@@ -184,8 +184,8 @@ const FoldersBox = () => {
                     <div className="flex items-center space-x-1 text-xs text-muted-foreground">
                       <FileText className="w-4 h-4" />
                       <span className="font-medium">
-                        {folder.Files?.length || 0}{" "}
-                        {folder.Files?.length > 1 ? "files" : "file"}
+                        {folder.Files?.length ?? 0}{" "}
+                        {(folder.Files?.length ?? 0) > 1 ? "files" : "file"}
                       </span>
                     </div>
                   </div>

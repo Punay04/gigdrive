@@ -1,5 +1,4 @@
 import { supabase } from "@/lib/db";
-import { useStore } from "@/zustand/store";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {

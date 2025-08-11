@@ -53,10 +53,11 @@ const FolderPageHeader = ({
       setUploading(false);
       toast(`${data.message}`);
       onUploadComplete();
-    } catch (error: any) {
+    } catch (error) {
       setUploading(false);
       const message =
-        error.response?.data?.message || "Something went wrong while uploading";
+        (axios.isAxiosError(error) && error.response?.data?.message) ||
+        "Something went wrong while uploading";
       toast(message);
     }
   };

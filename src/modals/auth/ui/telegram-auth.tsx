@@ -17,7 +17,7 @@ const TelegramAuth = () => {
     <>
       <div className="bg-gradient-to-br from-neutral-900/90 via-neutral-800/80 to-neutral-900/90 backdrop-blur-xl w-full p-8 sm:p-10 rounded-3xl text-white flex flex-col justify-center items-center gap-6 border border-border/60 shadow-2xl">
         <h1 className="text-3xl font-bold text-center tracking-tight">
-          Let's get started with{" "}
+          Let us get started with{" "}
           <span className="font-bold text-red-300 bg-gradient-to-r from-red-300 to-red-400 bg-clip-text underline underline-offset-4">
             GigDrive
           </span>

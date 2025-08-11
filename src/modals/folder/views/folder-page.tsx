@@ -1,9 +1,14 @@
-import React, { useRef } from "react";
+import React, { useImperativeHandle, useRef } from "react";
 import FolderPageHeader from "../ui/folder-page-header";
 import FilesBox from "../ui/files-box";
+import type { RefObject } from "react";
+
+type FilesBoxHandle = {
+  refetchFiles: () => void;
+};
 
 const FolderPage = ({ folderId }: { folderId: number }) => {
-  const filesBoxRef = useRef<any>(null);
+  const filesBoxRef = useRef<FilesBoxHandle | null>(null);
 
   const handleUploadComplete = () => {
     filesBoxRef.current?.refetchFiles();

@@ -14,10 +14,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import type { FileItem } from "@/types/models";
 
 const FilesBox = ({ folderId }: { folderId: number }) => {
-  const [files, setFiles] = useState<any[]>([]);
-  const [viewFiles, setViewFiles] = useState<any[]>([]);
+  const [files, setFiles] = useState<FileItem[]>([]);
+  const [viewFiles, setViewFiles] = useState<FileItem[]>([]);
   const userId = useStore((state) => state.userData.telegramId);
 
   const getFiles = async () => {
@@ -109,11 +110,11 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
         </div>
         <div className="w-full sm:w-auto">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <div className="relative flex-1 sm:flex-none">
+            <div className="relative flex-1 sm:flex-none mt-2 sm:mt-3">
               <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-400" />
               <Input
                 placeholder="Search files"
-                className="mt-2 sm:mt-3 h-11 w-full sm:w-72 md:w-80 rounded-xl bg-neutral-900/60 border border-border/60 text-white placeholder:text-neutral-500 pl-10 pr-4 focus-visible:border-red-300/60 focus-visible:ring-red-300/30 focus-visible:ring-[3px] shadow-sm"
+                className="h-11 w-full sm:w-72 md:w-80 rounded-xl bg-neutral-900/60 border border-border/60 text-white placeholder:text-neutral-500 pl-10 pr-4 focus-visible:border-red-300/60 focus-visible:ring-red-300/30 focus-visible:ring-[3px] shadow-sm"
                 onChange={(e) => handleChange(e.target.value)}
               />
             </div>
@@ -141,7 +142,7 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
-          {viewFiles.map((file: any) => (
+          {viewFiles.map((file: FileItem) => (
             <div
               key={file.id}
               className="group relative bg-gradient-to-br from-neutral-900/80 via-neutral-800/70 to-neutral-900/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-border/60 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:border-red-300/50 cursor-pointer overflow-hidden"
