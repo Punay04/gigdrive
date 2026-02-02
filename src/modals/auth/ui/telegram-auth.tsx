@@ -1,10 +1,10 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import { LoginButton } from "@telegram-auth/react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useStore } from "@/zustand/store";
+import dynamic from "next/dynamic";
 
 console.log("Bot username:", process.env.NEXT_PUBLIC_BOT_USERNAME);
 
@@ -12,6 +12,11 @@ const TelegramAuth = () => {
   const router = useRouter();
   const login = useStore((state) => state.login);
   const userData = useStore((state) => state.userData);
+
+  const TelegramLoginButton = dynamic(
+    () => import("@telegram-auth/react").then((mod) => mod.LoginButton),
+    { ssr: false },
+  );
 
   return (
     <>
@@ -32,14 +37,14 @@ const TelegramAuth = () => {
           />
         </div>
         <div className="w-full flex justify-center items-center">
-          <LoginButton
+          <TelegramLoginButton
             botUsername={process.env.NEXT_PUBLIC_BOT_USERNAME!}
             onAuthCallback={async (data) => {
               const res = await axios.post(
                 "https://gigdrive.vercel.app/api/telegramAuth",
                 {
                   ...data,
-                }
+                },
               );
               console.log(res.data);
               localStorage.setItem("token", res.data.token);
