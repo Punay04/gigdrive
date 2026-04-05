@@ -20,7 +20,6 @@ const FoldersBox = () => {
   const [folders, setFolders] = useState<FolderItem[]>([]);
   const [viewFolders, setViewFolders] = useState<FolderItem[]>([]);
   const userId = useStore((state) => state.userData.telegramId);
-  console.log("userId:", userId);
 
   const fetchFolders = async () => {
     const res = await axios.post("/api/getFolders", {
@@ -33,7 +32,6 @@ const FoldersBox = () => {
   useEffect(() => {
     const fetch = async () => {
       const data = await fetchFolders();
-      console.log(data);
 
       setFolders(data.folders || []);
       setViewFolders(data.folders || []);

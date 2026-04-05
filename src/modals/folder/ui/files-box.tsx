@@ -36,8 +36,8 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
         const data = await getFiles();
         setFiles(data.files || []);
         setViewFiles(data.files || []);
-      } catch (error) {
-        console.error("Error fetching files:", error);
+      } catch {
+        // Failed to fetch files
       }
     };
 
@@ -65,8 +65,8 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
       setFiles(data.files || []);
       setViewFiles(data.files || []);
       toast("File Deleted");
-    } catch (error) {
-      console.error("Error deleting file:", error);
+    } catch {
+      // Failed to delete file
     }
   };
 

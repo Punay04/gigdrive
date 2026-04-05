@@ -25,8 +25,6 @@ const FolderPageHeader = ({
 
   const userId = useStore((state) => state.userData.telegramId);
 
-  console.log(userId);
-
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;

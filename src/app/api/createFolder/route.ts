@@ -35,9 +35,7 @@ export async function POST(req: NextRequest) {
       message: "Folder created successfully",
       folder: folder.data,
     });
-  } catch (error) {
-    console.log(error);
-
+  } catch {
     return NextResponse.json(
       { message: "Failed to create folder" },
       { status: 500 }

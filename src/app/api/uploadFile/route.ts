@@ -1,7 +1,5 @@
 import { supabase } from "@/lib/db";
-import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
-import TelegramBot from "node-telegram-bot-api";
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,12 +7,6 @@ export async function POST(req: NextRequest) {
     const file = formData.get("file") as File;
     const folderId = formData.get("folderId") as string;
     const userId = formData.get("userId") as string;
-
-    console.log(userId);
-
-    const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN!, {
-      polling: false,
-    });
 
     if (!file || file.size === 0) {
       return NextResponse.json(
@@ -32,19 +24,16 @@ export async function POST(req: NextRequest) {
     }
 
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
-    console.log("File name:", file.name);
-    console.log("File size:", file.size);
-    console.log("File type:", file.type);
 
     const chatId = process.env.TELEGRAM_CHAT_ID!;
+    const botToken = process.env.TELEGRAM_BOT_TOKEN!;
 
+    // Check for existing file
     const existingFile = await supabase
       .from("Files")
       .select()
       .eq("fileName", file.name)
-      .single();
+      .maybeSingle();
 
     if (existingFile.data) {
       return NextResponse.json(
@@ -53,30 +42,32 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    let FileUpload;
-    if (file.type.startsWith("video")) {
-      FileUpload = await bot.sendVideo(
-        chatId,
-        buffer,
-        {},
-        {
-          filename: file.name,
-          contentType: file.type,
-        }
-      );
-    } else {
-      FileUpload = await bot.sendDocument(
-        chatId,
-        buffer,
-        {},
-        {
-          filename: file.name,
-          contentType: file.type,
-        }
+    // Create FormData for Telegram API
+    const telegramFormData = new FormData();
+    telegramFormData.append("chat_id", chatId);
+
+    const blob = new Blob([arrayBuffer], { type: file.type });
+    const endpoint = file.type.startsWith("video") ? "sendVideo" : "sendDocument";
+    const fieldName = file.type.startsWith("video") ? "video" : "document";
+
+    telegramFormData.append(fieldName, blob, file.name);
+
+    // Send to Telegram
+    const telegramResponse = await fetch(
+      `https://api.telegram.org/bot${botToken}/${endpoint}`,
+      { method: "POST", body: telegramFormData }
+    );
+
+    const telegramResult = await telegramResponse.json();
+
+    if (!telegramResult.ok) {
+      return NextResponse.json(
+        { message: "Failed to upload to Telegram", error: telegramResult.description },
+        { status: 500 }
       );
     }
 
-    console.log("FileUpload : " + FileUpload);
+    const FileUpload = telegramResult.result;
 
     const fileId = file.type.startsWith("video")
       ? FileUpload.video?.file_id
@@ -89,20 +80,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const fileUrl = await axios.get(
-      `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`
+    // Get file path from Telegram
+    const fileUrlResponse = await fetch(
+      `https://api.telegram.org/bot${botToken}/getFile?file_id=${fileId}`
     );
+    const fileUrlData = await fileUrlResponse.json();
 
+    // Save to database
     await supabase.from("Files").insert({
       fileName: file.name,
       fileSize: file.size,
       fileType: file.type,
       folderId: Number(folderId),
-      fileUploadId: FileUpload.document?.file_id,
-      fileLink: fileUrl.data.result.file_path,
+      fileUploadId: fileId,
+      fileLink: fileUrlData.result.file_path,
       userId,
       messageId: FileUpload.message_id,
-      thumbNailUrl: FileUpload.document?.thumb?.file_id,
+      thumbNailUrl: FileUpload.document?.thumb?.file_id || FileUpload.video?.thumb?.file_id,
     });
 
     return NextResponse.json({
@@ -111,8 +105,7 @@ export async function POST(req: NextRequest) {
       fileSize: file.size,
       FileUpload,
     });
-  } catch (error) {
-    console.log("Error uploading file:", error);
+  } catch {
     return NextResponse.json(
       { message: "Error uploading file" },
       { status: 500 }

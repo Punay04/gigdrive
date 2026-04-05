@@ -46,9 +46,6 @@ const FolderForm = () => {
             });
 
             const resData = await res.data;
-            console.log("hola");
-
-            console.log("resData : " + resData);
 
             toast(`${resData.message}`);
             form.reset();

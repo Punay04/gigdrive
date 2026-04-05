@@ -23,8 +23,7 @@ export async function POST(req: NextRequest) {
       message: "Success",
       files: files.data,
     });
-  } catch (error) {
-    console.log("Error getting files:", error);
+  } catch {
     return NextResponse.json({
       message: "Error getting files",
     });

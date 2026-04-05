@@ -7,8 +7,6 @@ const Folder = () => {
   const pathName = usePathname();
   const folderId = pathName.split("/").pop();
 
-  console.log(folderId);
-
   return (
     <div>
       <FolderPage folderId={Number(folderId)} />

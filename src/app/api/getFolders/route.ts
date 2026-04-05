@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   const { userId } = await request.json();
-  console.log("userId:", userId);
 
   try {
     const folders = await supabase
@@ -17,8 +16,7 @@ export async function POST(request: NextRequest) {
       message: "Success",
       folders: folders.data,
     });
-  } catch (error) {
-    console.log("Error getting folders:", error);
+  } catch {
     return NextResponse.json({
       message: "Error getting folders",
     });

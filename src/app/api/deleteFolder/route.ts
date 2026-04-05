@@ -16,8 +16,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       message: "Folder deleted",
     });
-  } catch (error) {
-    console.log("Error : " + error);
+  } catch {
     return NextResponse.json({
       message: "Error in deleting folder",
     });

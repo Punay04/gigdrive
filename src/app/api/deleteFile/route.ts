@@ -1,13 +1,8 @@
 import { supabase } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import TelegramBot from "node-telegram-bot-api";
 
 export async function POST(req: NextRequest) {
   const { fileId } = await req.json();
-
-  const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN!, {
-    polling: false,
-  });
 
   if (!fileId) {
     return NextResponse.json({ message: "Missing fileId" }, { status: 400 });
@@ -24,16 +19,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "File not found" }, { status: 404 });
     }
 
-    console.log("fileUploadId from DB:", file.fileUploadId);
-    console.log("Converted to number:", Number(file.fileUploadId));
-
+    // Delete from Supabase first
     await supabase.from("Files").delete().eq("id", fileId);
 
-    await bot.deleteMessage(process.env.TELEGRAM_CHAT_ID!, file.messageId);
+    // Delete from Telegram using direct API
+    const botToken = process.env.TELEGRAM_BOT_TOKEN!;
+    const chatId = process.env.TELEGRAM_CHAT_ID!;
+
+    const telegramResponse = await fetch(
+      `https://api.telegram.org/bot${botToken}/deleteMessage?chat_id=${chatId}&message_id=${file.messageId}`
+    );
+
+    const telegramResult = await telegramResponse.json();
+
+    if (!telegramResult.ok) {
+      // Don't fail the request if Telegram delete fails - file is already removed from DB
+    }
 
     return NextResponse.json({ message: "File deleted" });
-  } catch (error) {
-    console.log("Error deleting file:", error);
-    return NextResponse.json({ message: "Error deleting file" });
+  } catch {
+    return NextResponse.json({ message: "Error deleting file" }, { status: 500 });
   }
 }
