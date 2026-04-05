@@ -113,7 +113,7 @@ const FoldersBox = () => {
               variant={"outline"}
               className="mt-2 sm:mt-3 h-11 w-full sm:w-11 rounded-xl bg-neutral-900/60 border border-border/60 text-white hover:border-red-300/50 hover:bg-neutral-900/70 shadow-sm transition-colors flex items-center justify-center cursor-pointer"
             >
-              <RefreshCwIcon className="w-4 h-4 text-red-300" />
+              <RefreshCwIcon className="w-4 h-4 text-red-300 animate-spin" />
             </Button>
           </div>
         </div>
