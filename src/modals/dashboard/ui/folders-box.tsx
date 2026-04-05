@@ -20,6 +20,7 @@ const FoldersBox = () => {
   const [folders, setFolders] = useState<FolderItem[]>([]);
   const [viewFolders, setViewFolders] = useState<FolderItem[]>([]);
   const userId = useStore((state) => state.userData.telegramId);
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchFolders = async () => {
     const res = await axios.post("/api/getFolders", {
@@ -63,15 +64,22 @@ const FoldersBox = () => {
     }
 
     setViewFolders(
-      folders.filter((folder) => folder.name.toLowerCase().startsWith(value))
+      folders.filter((folder) => folder.name.toLowerCase().startsWith(value)),
     );
   };
 
   const handleRefresh = async () => {
-    const data = await fetchFolders();
-    setFolders(data.folders || []);
-    setViewFolders(data.folders || []);
-    toast("Folders Refreshed");
+    try {
+      setRefreshing(true);
+      const data = await fetchFolders();
+      setFolders(data.folders || []);
+      setViewFolders(data.folders || []);
+      toast("Folders Refreshed");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   return (
@@ -113,7 +121,9 @@ const FoldersBox = () => {
               variant={"outline"}
               className="mt-2 sm:mt-3 h-11 w-full sm:w-11 rounded-xl bg-neutral-900/60 border border-border/60 text-white hover:border-red-300/50 hover:bg-neutral-900/70 shadow-sm transition-colors flex items-center justify-center cursor-pointer"
             >
-              <RefreshCwIcon className="w-4 h-4 text-red-300 animate-spin" />
+              <RefreshCwIcon
+                className={`w-4 h-4 text-red-300 ${refreshing && "animate-spin"}`}
+              />
             </Button>
           </div>
         </div>

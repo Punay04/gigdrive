@@ -20,6 +20,7 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
   const [files, setFiles] = useState<FileItem[]>([]);
   const [viewFiles, setViewFiles] = useState<FileItem[]>([]);
   const userId = useStore((state) => state.userData.telegramId);
+  const [refreshing, setRefreshing] = useState(false);
 
   const getFiles = async () => {
     const res = await axios.post("/api/getFiles", {
@@ -79,15 +80,22 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
     }
 
     setViewFiles(
-      files.filter((file) => file.fileName.toLowerCase().startsWith(value))
+      files.filter((file) => file.fileName.toLowerCase().startsWith(value)),
     );
   };
 
   const handleRefresh = async () => {
-    const data = await getFiles();
-    setFiles(data.files || []);
-    setViewFiles(data.files || []);
-    toast("Files Refreshed");
+    try {
+      setRefreshing(true);
+      const data = await getFiles();
+      setFiles(data.files || []);
+      setViewFiles(data.files || []);
+      toast("Files Refreshed");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   return (
@@ -123,7 +131,9 @@ const FilesBox = ({ folderId }: { folderId: number }) => {
               variant={"outline"}
               className="mt-2 sm:mt-3 h-11 w-full sm:w-11 rounded-xl bg-neutral-900/60 border border-border/60 text-white hover:border-red-300/50 hover:bg-neutral-900/70 shadow-sm transition-colors flex items-center justify-center cursor-pointer"
             >
-              <RefreshCwIcon className="w-4 h-4 text-red-300 animate-spin" />
+              <RefreshCwIcon
+                className={`w-4 h-4 text-red-300 ${refreshing && "animate-spin"}`}
+              />
             </Button>
           </div>
         </div>
